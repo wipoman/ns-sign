@@ -1,5 +1,5 @@
 > **本分支新增：Oracle AMD / Ubuntu VPS 本地部署。**
-> 已整理登录接口修复、Cookie 与设备令牌持久化，以及北京时间 00:10 / 08:10 定时任务。
+> 已整理登录接口修复、Cookie 与设备令牌持久化。
 > 请先阅读 [中文部署与修改说明](docs/VPS部署与修改说明.md)。VPS 使用 `local_run.py`；下方原上游说明对应 `nodeseek_sign.py` 的 GitHub Actions / 青龙入口，两者配置方式不同。
 
 # NodeSeek-Signin

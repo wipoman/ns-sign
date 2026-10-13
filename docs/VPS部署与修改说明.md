@@ -1,6 +1,6 @@
 # Oracle AMD VPS：NodeSeek 登录与定时签到
 
-本分支把 2026-10-13 在 Oracle AMD / Ubuntu VPS 上验证的改动整理为源码与部署文件。配套项目：[wipoman/cloudflyer-oss](https://github.com/wipoman/cloudflyer-oss)。
+本分支把配套项目：[wipoman/cloudflyer-oss](https://github.com/wipoman/cloudflyer-oss)。
 
 ## 修改内容
 
@@ -13,7 +13,7 @@
 | `local_run.py` | 特别处理 HTTP 500 且消息恰为“今天已完成签到，请勿重复操作”；其他 500 不作为签到成功。这修复的是本地适配初版过严的状态码判断，上游原 `sign()` 已能识别“已完成签到”。 |
 | `Dockerfile`、`requirements-vps.txt`、`init_config.py` | 构建本地一次性任务镜像，初始化本地配置；镜像只复制运行所需文件。 |
 | `.gitignore`、`.dockerignore` | 排除账号配置、Cookie、令牌、诊断私有文件与本地数据。 |
-| `deploy/systemd/` | 每天北京时间 00:10、08:10 执行；错过时补执行。收尾先确认容器存在，避免正常退出后出现 `No such container` 噪声。 |
+| `deploy/systemd/` | 每天执行；错过时补执行。收尾先确认容器存在，避免正常退出后出现 `No such container` 噪声。 |
 | `tests/` | 无真实账号、无需网络的登录与签到回归测试。 |
 
 最终 VPS 入口是 `local_run.py`，复用原 `turnstile_solver.py`，不运行 `nodeseek_sign.py` 主流程。它固定调用本机 `http://127.0.0.1:3000`，签到使用 `random=true`，未迁移多账号、通知、收益统计或 YesCaptcha 选择功能。

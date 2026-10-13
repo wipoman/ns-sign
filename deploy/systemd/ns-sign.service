@@ -1,0 +1,11 @@
+[Unit]
+Description=NodeSeek daily sign-in
+Wants=network-online.target
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker run --rm --name ns-sign-scheduled --network host -v /opt/ns-sign/data:/data ns-sign-local:latest
+TimeoutStartSec=10min
+ExecStopPost=-/bin/sh -c '/usr/bin/docker container inspect ns-sign-scheduled >/dev/null 2>&1 && /usr/bin/docker stop -t 10 ns-sign-scheduled'

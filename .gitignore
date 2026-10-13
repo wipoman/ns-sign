@@ -1,0 +1,11 @@
+data/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.py[cod]
+*.bak
+config.json
+cookie.txt
+session_state*.json
+login-*.json

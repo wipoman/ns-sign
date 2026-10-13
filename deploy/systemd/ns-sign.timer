@@ -1,0 +1,11 @@
+[Unit]
+Description=Run NodeSeek sign-in twice daily
+
+[Timer]
+OnCalendar=*-*-* 00:10:00 Asia/Shanghai
+OnCalendar=*-*-* 08:10:00 Asia/Shanghai
+Persistent=true
+Unit=ns-sign.service
+
+[Install]
+WantedBy=timers.target

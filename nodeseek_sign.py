@@ -172,7 +172,7 @@ def session_login(user, password, solver_type, api_base_url, client_key):
         token = solver.solve(
             url="https://www.nodeseek.com/signIn.html",
             sitekey="0x4AAAAAAAaNy7leGjewpVyR",
-            verbose=True
+            verbose=False
         )
         if not token:
             print("验证码解析失败")
@@ -186,9 +186,7 @@ def session_login(user, password, solver_type, api_base_url, client_key):
 
     data = {
         "username": user,
-        "password": password,
-        "token": token,
-        "source": "turnstile"
+        "password": password
     }
     headers = {
         'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0",
@@ -203,11 +201,21 @@ def session_login(user, password, solver_type, api_base_url, client_key):
         'accept-language': "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
         'Content-Type': "application/json"
     }
+    headers["x-captcha-token"] = token
+    headers["x-captcha-source"] = "turnstile"
     try:
-        response = session.post("https://www.nodeseek.com/api/account/signIn", json=data, headers=headers)
+        response = session.post("https://www.nodeseek.com/api/account/signIn", json=data,
+                                headers=headers, timeout=60, allow_redirects=False)
         resp_json = response.json()
-        if resp_json.get("success"):
+        redirect = str(resp_json.get("redirect") or "")
+        if resp_json.get("need2FA") or "emailSignIn" in redirect or "smsSignIn" in redirect:
+            print("登录需要邮箱、短信或二次验证，尚未完成登录")
+            return None
+        if 200 <= response.status_code < 300 and resp_json.get("success") is True:
             cookies = session.cookies.get_dict()
+            if not cookies.get("session"):
+                print("登录响应没有 session Cookie，尚未完成登录")
+                return None
             cookie_string = '; '.join([f"{k}={v}" for k, v in cookies.items()])
             return cookie_string
         else:
@@ -497,3 +505,4 @@ if __name__ == "__main__":
             print("所有Cookie已成功保存")
         except Exception as e:
             print(f"保存Cookie变量异常: {e}")
+

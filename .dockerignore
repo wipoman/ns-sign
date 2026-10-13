@@ -1,0 +1,6 @@
+*
+!Dockerfile
+!requirements-vps.txt
+!local_run.py
+!init_config.py
+!turnstile_solver.py

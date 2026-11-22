@@ -32,7 +32,7 @@
 
 本教程配套 [wipoman/cloudflyer-oss](https://github.com/wipoman/cloudflyer-oss)，适用于 **Ubuntu 22.04 / 24.04、AMD64（x86_64）、systemd、Docker**。Oracle AMD VPS 可按此安装；当前 `Dockerfile.vps` **不是 ARM64 安装方案**，不要直接用于 Oracle ARM 实例。
 
-部署后：CloudFlyer 常驻运行；ns-sign 在每天**北京时间 00:10、08:10** 各执行一次，状态保存在本机。以下按单账号部署，不需要 GitHub PAT、GitHub Secrets 或青龙面板。原上游 GitHub Actions / 青龙用法已折叠到本页下方。
+部署后：CloudFlyer 常驻运行；ns-sign 在每天**北京时间 08:00** 各执行一次，状态保存在本机。以下按单账号部署，不需要 GitHub PAT、GitHub Secrets 或青龙面板。原上游 GitHub Actions / 青龙用法已折叠到本页下方。
 
 > 首次需要在自己的浏览器完成 NodeSeek 登录，必要时完成邮箱/短信验证，再导入 Cookie 和设备令牌。日常任务会复用会话，但不保证未来遇到 Cloudflare 或账号二次验证时能无人值守恢复。VPS 入口尚未迁移上游多账号、通知和收益统计功能。
 

@@ -1,6 +1,8 @@
 # Oracle AMD VPS：NodeSeek 登录与定时签到
 
-本分支把配套项目：[wipoman/cloudflyer-oss](https://github.com/wipoman/cloudflyer-oss)。
+配套项目：[wipoman/cloudflyer-oss](https://github.com/wipoman/cloudflyer-oss)。
+
+> 2026-11-22 新增：[Cloudflare 拦截后的浏览器恢复](BROWSER_RECOVERY.md)。正常签到仍使用下方 `local_run.py`，没有将恢复测试脚本加入定时任务。
 
 ## 修改内容
 
@@ -168,7 +170,7 @@ docker run --rm --network host -v /opt/ns-sign/data:/data ns-sign-local:latest p
 
 响应只返回新 CSRF 令牌、没有返回新 security 令牌时，保留已有 security 令牌。脚本保存服务端返回的 Cookie/令牌，不会自行延长服务端会话期限。当前用 Cookie 字符串持久化，不是完整浏览器用户目录，也不持久保存完整 Cookie 属性或 Local Storage 的其他字段。
 
-- 实测：无旧 Cookie 的重新登录返回 `pjwt/session/smac`，账号接口确认有效，无邮箱跳转；重复签到 HTTP 500 正确处理；systemd 服务成功。
+- 2026-10-13 实测：无旧 Cookie 的重新登录返回 `pjwt/session/smac`，账号接口确认有效，无邮箱跳转；重复签到 HTTP 500 正确处理；systemd 服务成功。
 - 初次浏览器登录和状态导入仍需本人完成。设备状态可复用是本次环境的实测结果，不能保证所有账号、IP 或未来风控策略都适用。
 - 没有实现动态 `x-integrity-token`，没有实现邮箱/短信验证码读取。返回 `/emailSignIn.html`、`/smsSignIn.html` 或 `need2FA` 时停止并保留原状态。
 - 保留 `curl_cffi` 的 `chrome110` impersonation；这是 HTTP 客户端配置，不是 CloudFlyer 内 Chrome 的实际版本。
